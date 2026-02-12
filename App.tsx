@@ -31,18 +31,20 @@ import {
   Construction,
   Zap,
   Clock,
-  Gem
+  Gem,
+  Brain,
+  ExternalLink
 } from 'lucide-react';
 
 const ERP_URL = "https://qitpes-erp-system.vercel.app/";
 const PORTFOLIO_URL = "https://sourishdeyportfolio.vercel.app/";
 
 const SLIDESHOW_IMAGES = [
-  "https://images.unsplash.com/photo-1541888946425-d81bb19480c5?q=80&w=1200&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=1200&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1200&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1590644365607-1c5a519a7a37?q=80&w=1200&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1517089534702-8a930fd0866a?q=80&w=1200&auto=format&fit=crop"
+  "https://res.cloudinary.com/dodhvvewu/image/upload/v1770922899/construction-site-blue-12728140_wacsbw.webp",
+  "https://res.cloudinary.com/dodhvvewu/image/upload/v1770922897/quantity-surveyor-construction-site_d4bylm.webp",
+  "https://res.cloudinary.com/dodhvvewu/image/upload/v1770922524/what-is-construction-erp3_eydrp3.web",
+  "https://res.cloudinary.com/dodhvvewu/image/upload/v1770922546/benefits-of-erp-in-construction-industry1_m5t9hs.webp",
+  "https://res.cloudinary.com/dodhvvewu/image/upload/v1770922543/Importance-of-Construction-ERP-Software_ythf20.webp"
 ];
 
 const Navbar = () => {
@@ -216,7 +218,8 @@ const Solutions = () => {
     { icon: UserPlus, name: "HR & Payroll", desc: "Unified talent management, benefits, and payroll disbursement cycles." },
     { icon: HardHat, name: "Labour Management", desc: "Workforce scheduling, digital attendance, and compliance logs." },
     { icon: Users, name: "Contractor Management Software", desc: "Centralized portal for managing external vendor contracts and trails." },
-    { icon: BarChart3, name: "Management Info. System", desc: "Predictive BI dashboards for high-level organizational decision making." }
+    { icon: BarChart3, name: "Management Info. System", desc: "Predictive BI dashboards for high-level organizational decision making." },
+    { icon: Brain, name: "AI-Powered Insights", desc: "Harness generative AI for predictive risk mitigation and automated documentation." }
   ];
 
   return (
@@ -456,13 +459,18 @@ const Footer = () => (
         <div className="mb-8 lg:mb-0">
           © {new Date().getFullYear()} QITPES ERP SYSTEM. ALL RIGHTS RESERVED.
         </div>
-        <div className="flex flex-col sm:flex-row items-center space-y-6 sm:space-y-0 sm:space-x-12">
-          <span className="text-slate-950">MADE BY <strong className="font-black">SOURISH DEY</strong></span>
+        <div className="flex flex-col sm:flex-row items-center space-y-8 sm:space-y-0 sm:space-x-12 p-8 bg-slate-50 rounded-[2.5rem] border border-slate-100 shadow-inner">
+          <div className="flex flex-col items-center sm:items-end">
+            <span className="text-[10px] text-slate-400 mb-1 font-black">DESIGNED & ENGINEERED BY</span>
+            <span className="text-3xl font-black text-blue-950 tracking-tighter">SOURISH DEY</span>
+          </div>
           <a 
             href={PORTFOLIO_URL} 
-            className="px-8 py-3 bg-blue-50 text-blue-600 rounded-xl font-black border border-blue-100 hover:bg-blue-600 hover:text-white transition-all shadow-lg shadow-blue-900/5"
+            target="_blank"
+            className="flex items-center space-x-3 px-10 py-5 bg-blue-600 text-white rounded-2xl font-black text-lg hover:bg-blue-700 transition-all shadow-xl shadow-blue-200 transform hover:-translate-y-1 active:scale-95 group"
           >
-            VISIT PORTFOLIO
+            <span>VISIT PORTFOLIO</span>
+            <ExternalLink size={20} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
           </a>
         </div>
       </div>
