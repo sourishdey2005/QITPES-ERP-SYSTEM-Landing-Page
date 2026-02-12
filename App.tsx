@@ -38,11 +38,11 @@ const ERP_URL = "https://qitpes-erp-system.vercel.app/";
 const PORTFOLIO_URL = "https://sourishdeyportfolio.vercel.app/";
 
 const SLIDESHOW_IMAGES = [
-  "https://imgs.search.brave.com/dYIXPplceetbupEbBc2RbkF_i2JVpbO1Tb-8ecnUEFw/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9zbWFy/dGJhcnJlbC5pby93/cC1jb250ZW50L3Vw/bG9hZHMvMjAyNC8w/NC9iZW5lZml0cy1v/Zi1lcnAtaW4tY29u/c3RydWN0aW9uLWlu/ZHVzdHJ5NS5qcGc",
-  "https://imgs.search.brave.com/9HRCQ5BY0QCzux8B2lWglPjJRdX5XBA4fNmFxbXC4jg/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly93d3cu/bGlnaHRob3VzZWlu/ZGlhLmNvbS9pbWFn/ZXMvbWFpbi1ibG9n/LWltYWdlL3doYXQt/aXMtY29uc3RydWN0/aW9uLWVycDMud2Vi/cA",
-  "https://imgs.search.brave.com/m7O3YzHOapLtjCAb-E9X-CHOJzHuFvSOV2yWLt4YbbQ/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly93d3cu/aW5uaXRpc29mdHdh/cmUuY29tL2Fzc2V0/cy9pbWcvc2Vydmlj/ZS9jb25zdHJ1Y3Rp/b24ud2VicA",
-  "https://imgs.search.brave.com/qEOQdFIr5WL-mc6IPKkk649Mp599IQMG0qI90diB6wg/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly93d3cu/cHJpb3JpdHktc29m/dHdhcmUuY29tL3dw/LWNvbnRlbnQvdXBs/b2Fkcy8yMDIyLzAy/L2NyYW5lcy1nNzg3/YTA5M2E2LTE5MjAt/ZTE2NDQ2NzMyMjY3/MzkuanBn",
-  "https://imgs.search.brave.com/Sikm37nhQh-TnwAjzUjYKTTRgjnMkdtke_219TFns04/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9zbWFy/dGJhcnJlbC5pby93/cC1jb250ZW50L3Vw/bG9hZHMvMjAyNC8w/NC9iZW5lZml0cy1v/Zi1lcnAtaW4tY29u/c3RydWN0aW9uLWlu/ZHVzdHJ5MS5qcGc"
+  "https://images.unsplash.com/photo-1541888946425-d81bb19480c5?q=80&w=1200&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=1200&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1200&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1590644365607-1c5a519a7a37?q=80&w=1200&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1517089534702-8a930fd0866a?q=80&w=1200&auto=format&fit=crop"
 ];
 
 const Navbar = () => {
@@ -148,29 +148,16 @@ const Hero = () => {
                     alt={`Construction Project ${idx + 1}`} 
                     className="w-full h-full object-cover grayscale-[0.1]"
                   />
-                  {/* Styled Overlay Text */}
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/30">
-                    <div className="text-center transform scale-110 backdrop-blur-md bg-white/10 p-8 rounded-3xl border border-white/20 shadow-2xl">
-                      <div className="text-white text-5xl font-black tracking-tighter mb-2 drop-shadow-2xl">
+                  {/* Small Branding Overlay in Top-Left Corner */}
+                  <div className="absolute inset-0 bg-black/20">
+                    <div className="absolute top-8 left-8 backdrop-blur-md bg-white/10 px-5 py-3 rounded-2xl border border-white/20 shadow-xl">
+                      <div className="text-white text-xl font-black tracking-tighter drop-shadow-md">
                         QITPES <span className="text-blue-400">ERP</span>
                       </div>
-                      <div className="h-1.5 w-24 bg-blue-500 mx-auto rounded-full"></div>
                     </div>
                   </div>
                 </div>
               ))}
-              
-              <div className="absolute -bottom-10 -left-10 bg-white p-7 rounded-[2rem] shadow-2xl border border-slate-50 w-64 z-20">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="p-3 bg-blue-600 text-white rounded-xl"><Activity size={24} /></div>
-                  <div className="flex flex-col items-end">
-                    <span className="text-green-600 font-black text-xs uppercase">Live Sync</span>
-                    <span className="text-slate-400 text-[10px]">Cloud Active</span>
-                  </div>
-                </div>
-                <div className="text-3xl font-black text-slate-900">Active</div>
-                <div className="text-slate-400 text-[10px] font-bold uppercase tracking-widest mt-1">Platform Status</div>
-              </div>
             </div>
             
             {/* Dots navigation */}
