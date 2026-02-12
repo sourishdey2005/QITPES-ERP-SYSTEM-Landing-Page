@@ -42,7 +42,7 @@ const PORTFOLIO_URL = "https://sourishdeyportfolio.vercel.app/";
 const SLIDESHOW_IMAGES = [
   "https://res.cloudinary.com/dodhvvewu/image/upload/v1770922899/construction-site-blue-12728140_wacsbw.webp",
   "https://res.cloudinary.com/dodhvvewu/image/upload/v1770922897/quantity-surveyor-construction-site_d4bylm.webp",
-  "https://res.cloudinary.com/dodhvvewu/image/upload/v1770922524/what-is-construction-erp3_eydrp3.web",
+  "https://res.cloudinary.com/dodhvvewu/image/upload/v1770923066/acumatica-construction-edition-development-related_1_bx9ctw.webp",
   "https://res.cloudinary.com/dodhvvewu/image/upload/v1770922546/benefits-of-erp-in-construction-industry1_m5t9hs.webp",
   "https://res.cloudinary.com/dodhvvewu/image/upload/v1770922543/Importance-of-Construction-ERP-Software_ythf20.webp"
 ];
