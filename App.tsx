@@ -51,7 +51,8 @@ import {
   RefreshCw,
   Search,
   MonitorCheck,
-  Shield
+  Shield,
+  Cloud
 } from 'lucide-react';
 
 const ERP_URL = "https://qitpes-erp-system.vercel.app/";
@@ -72,7 +73,6 @@ const useScrollReveal = (threshold = 0.1) => {
   useEffect(() => {
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
-        // Toggle visibility to enable rewind effect when scrolling up/away
         setIsVisible(entry.isIntersecting);
       });
     }, { threshold, rootMargin: '0px 0px -50px 0px' });
@@ -793,28 +793,42 @@ const StatsStrip = () => {
 const TrustBadges = () => {
   const { isVisible, domRef } = useScrollReveal();
   const badges = [
-    { icon: Shield, label: "ISO 27001 Certified" },
-    { icon: Lock, label: "SOC 2 Type II" },
-    { icon: Scale, label: "GDPR Compliant" },
-    { icon: FileCheck, label: "HIPAA Ready" },
-    { icon: Globe, label: "RERA Compliant" }
+    { icon: Shield, label: "ISO Certified" },
+    { icon: Lock, label: "SOC 2 Compliant" },
+    { icon: Scale, label: "GDPR Ready" },
+    { icon: FileCheck, label: "HIPAA Validated" },
+    { icon: Globe, label: "RERA Registered" }
   ];
 
   return (
-    <div ref={domRef} className="bg-white border-b border-slate-100 pb-12 overflow-hidden">
+    <div ref={domRef} className="bg-white border-b border-slate-50 pb-8 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-wrap justify-center items-center gap-x-12 gap-y-6 opacity-60">
+        <div className={`flex flex-wrap justify-center items-center gap-x-10 gap-y-6 transition-all duration-1000 ${isVisible ? 'opacity-50' : 'opacity-0'}`}>
           {badges.map((badge, idx) => (
             <div 
               key={idx} 
-              className={`flex items-center space-x-2 text-slate-400 grayscale hover:grayscale-0 transition-all duration-700 cubic-bezier ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+              className={`flex items-center space-x-2 text-slate-400 grayscale hover:grayscale-0 hover:text-slate-600 transition-all duration-700 cubic-bezier ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}`}
               style={{ transitionDelay: `${(idx + 4) * 100}ms` }}
             >
-              <badge.icon size={14} className="flex-shrink-0" />
-              <span className="text-[10px] font-black uppercase tracking-[0.2em]">{badge.label}</span>
+              <badge.icon size={13} className="flex-shrink-0 opacity-70" />
+              <span className="text-[9px] font-black uppercase tracking-[0.25em]">{badge.label}</span>
             </div>
           ))}
         </div>
+      </div>
+    </div>
+  );
+};
+
+const CloudBasedBadge = () => {
+  const { isVisible, domRef } = useScrollReveal();
+  return (
+    <div ref={domRef} className="bg-white pb-12 flex justify-center overflow-hidden">
+      <div 
+        className={`inline-flex items-center px-4 py-2 rounded-full bg-slate-50 text-slate-400 text-[9px] font-black uppercase tracking-[0.3em] border border-slate-100 transition-all duration-1000 cubic-bezier ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+      >
+        <div className="w-1.5 h-1.5 rounded-full bg-[#EA4643] mr-3 animate-pulse shadow-[0_0_8px_rgba(234,70,67,0.4)]"></div>
+        Cloud-Based Deployment
       </div>
     </div>
   );
@@ -1065,22 +1079,22 @@ const Footer = () => (
       
       <div className="border-t border-slate-100 pt-20 flex flex-col lg:flex-row justify-between items-center text-slate-400 font-bold text-[10px] tracking-[0.4em] uppercase">
         <div className="mb-8 lg:mb-0">© {new Date().getFullYear()} QITPES ERP SYSTEM. ALL RIGHTS RESERVED.</div>
-        <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-5 p-5 bg-slate-50 rounded-3xl border border-slate-100 shadow-inner group overflow-hidden relative transition-all duration-700 hover:border-red-200">
-          <div className="absolute inset-0 bg-gradient-to-r from-red-50/0 via-red-50/50 to-red-50/0 bg-[length:200%_auto] animate-gradient-slow group-hover:opacity-100 opacity-50 transition-opacity"></div>
+        <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-8 p-6 bg-slate-50 rounded-[3rem] border border-slate-100 shadow-inner group overflow-hidden relative transition-all duration-700 hover:border-[#EA4643]/30">
+          <div className="absolute inset-0 bg-gradient-to-r from-red-50/0 via-red-50/30 to-red-50/0 bg-[length:200%_auto] animate-gradient-slow group-hover:opacity-100 opacity-30 transition-opacity"></div>
           <div className="flex flex-col items-center sm:items-end relative z-10">
-            <span className="text-[8px] text-slate-400 mb-0.5 font-black">ARCHITECTED BY</span>
-            <span className="text-lg lg:text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-slate-900 via-[#EA4643] to-slate-900 bg-[length:200%_auto] animate-text-shimmer tracking-tighter">SOURISH DEY</span>
+            <span className="text-[7px] text-slate-400 mb-1 font-black">ARCHITECTED BY</span>
+            <span className="text-base font-black text-transparent bg-clip-text bg-gradient-to-r from-slate-900 via-[#EA4643] to-slate-900 bg-[length:200%_auto] animate-text-shimmer tracking-tighter">SOURISH DEY</span>
           </div>
           <a 
             href={PORTFOLIO_URL} 
             target="_blank"
-            className="relative overflow-hidden flex items-center space-x-2.5 px-5 py-2.5 bg-[#EA4643] text-white rounded-xl font-black text-[10px] hover:bg-[#D13D3A] transition-all shadow-xl shadow-red-300 transform hover:-translate-y-1 group/btn"
+            className="relative overflow-hidden flex items-center space-x-3 px-8 py-3.5 bg-[#EA4643] text-white rounded-2xl font-black text-xs hover:bg-[#D13D3A] transition-all shadow-2xl shadow-red-300 transform hover:-translate-y-1 active:scale-95 group/btn"
           >
             <span className="relative z-10 flex items-center">
-              PORTFOLIO
-              <ExternalLink size={14} className="ml-2 transition-transform duration-500 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1" />
+              VISIT PORTFOLIO
+              <ExternalLink size={16} className="ml-2.5 transition-transform duration-500 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1" />
             </span>
-            <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent to-white opacity-40 group-hover/btn:animate-shine" />
+            <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent to-white opacity-40 group-hover:animate-shine" />
           </a>
         </div>
       </div>
@@ -1095,6 +1109,7 @@ const App: React.FC = () => {
       <Hero />
       <StatsStrip />
       <TrustBadges />
+      <CloudBasedBadge />
       <Solutions />
       <TechnicalArchitecture />
       <RoleExperience />
