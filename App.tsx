@@ -41,7 +41,17 @@ import {
   Settings,
   ShieldAlert,
   BarChart,
-  MapPin
+  MapPin,
+  Workflow,
+  History,
+  GitBranch,
+  Boxes,
+  Maximize,
+  ShieldEllipsis,
+  RefreshCw,
+  Search,
+  MonitorCheck,
+  Shield
 } from 'lucide-react';
 
 const ERP_URL = "https://qitpes-erp-system.vercel.app/";
@@ -62,12 +72,10 @@ const useScrollReveal = (threshold = 0.1) => {
   useEffect(() => {
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.unobserve(entry.target);
-        }
+        // Toggle visibility to enable rewind effect when scrolling up/away
+        setIsVisible(entry.isIntersecting);
       });
-    }, { threshold });
+    }, { threshold, rootMargin: '0px 0px -50px 0px' });
 
     const current = domRef.current;
     if (current) observer.observe(current);
@@ -90,7 +98,7 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav className={`fixed w-full z-50 transition-all duration-700 ${scrolled ? 'bg-white/80 backdrop-blur-xl shadow-2xl border-b border-white/20 py-3' : 'bg-transparent py-6'}`}>
+    <nav className={`fixed w-full z-50 transition-all duration-700 ${scrolled ? 'bg-white/90 backdrop-blur-xl shadow-2xl border-b border-white/10 py-3' : 'bg-transparent py-6'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
           <div className="flex items-center group cursor-pointer">
@@ -99,17 +107,17 @@ const Navbar = () => {
             </span>
           </div>
           <div className="hidden md:flex space-x-6 items-center text-[11px] font-black text-slate-800 uppercase tracking-[0.2em]">
-            <a href="#modules" className="hover:text-[#EA4643] transition-all">Modules</a>
-            <a href="#roles" className="hover:text-[#EA4643] transition-all">Roles</a>
-            <a href="#integrations" className="hover:text-[#EA4643] transition-all">Connectivity</a>
-            <a href="#calculator" className="hover:text-[#EA4643] transition-all">ROI</a>
-            <a href="#implementation" className="hover:text-[#EA4643] transition-all">Process</a>
+            <a href="#modules" className="hover:text-[#EA4643] transition-all relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[2px] after:bg-[#EA4643] after:transition-all hover:after:w-full">Modules</a>
+            <a href="#roles" className="hover:text-[#EA4643] transition-all relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[2px] after:bg-[#EA4643] after:transition-all hover:after:w-full">Roles</a>
+            <a href="#integrations" className="hover:text-[#EA4643] transition-all relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[2px] after:bg-[#EA4643] after:transition-all hover:after:w-full">Connectivity</a>
+            <a href="#architecture" className="hover:text-[#EA4643] transition-all relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[2px] after:bg-[#EA4643] after:transition-all hover:after:w-full">Stack</a>
+            <a href="#safety" className="hover:text-[#EA4643] transition-all relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[2px] after:bg-[#EA4643] after:transition-all hover:after:w-full">Safety</a>
             <a 
               href={ERP_URL} 
               target="_self"
               className="relative overflow-hidden group bg-[#EA4643] text-white px-6 py-3 rounded-xl hover:bg-[#D13D3A] transition-all shadow-xl shadow-red-200"
             >
-              <span className="relative z-10">Launch ERP</span>
+              <span className="relative z-10 font-bold">Launch ERP</span>
               <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent to-white opacity-40 group-hover:animate-shine" />
             </a>
           </div>
@@ -126,7 +134,7 @@ const Navbar = () => {
           <div className="px-6 py-8 space-y-4">
             <a href="#modules" className="block text-lg font-black text-gray-800" onClick={() => setIsOpen(false)}>Modules</a>
             <a href="#roles" className="block text-lg font-black text-gray-800" onClick={() => setIsOpen(false)}>Role Experience</a>
-            <a href="#calculator" className="block text-lg font-black text-gray-800" onClick={() => setIsOpen(false)}>ROI Calculator</a>
+            <a href="#architecture" className="block text-lg font-black text-gray-800" onClick={() => setIsOpen(false)}>Architecture</a>
             <a href={ERP_URL} target="_self" className="block w-full text-center bg-[#EA4643] text-white py-4 rounded-xl font-black shadow-xl">Launch ERP System</a>
           </div>
         </div>
@@ -147,34 +155,33 @@ const Hero = () => {
   }, []);
 
   return (
-    <section ref={domRef} className="pt-32 pb-20 lg:pt-56 lg:pb-48 bg-white overflow-hidden relative">
+    <section ref={domRef} className="pt-32 pb-20 lg:pt-64 lg:pb-56 bg-white overflow-hidden relative">
       <div className="absolute inset-0 z-0 opacity-40 animate-gradient-slow bg-[linear-gradient(-45deg,#fff1f2,#fee2e2,#fecaca,#f8fafc)] bg-[length:400%_400%]"></div>
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
-          <div className={`max-w-2xl text-center lg:text-left transition-all duration-1000 delay-300 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'}`}>
+        <div className="grid lg:grid-cols-2 gap-24 items-center">
+          <div className={`max-w-2xl text-center lg:text-left transition-all duration-1000 cubic-bezier ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'}`}>
             <div className="inline-flex items-center px-4 py-2 rounded-full bg-red-50/80 backdrop-blur-sm text-[#EA4643] text-[10px] font-black uppercase tracking-[0.25em] mb-10 border border-red-100 animate-bounce-subtle">
               <Rocket className="mr-2" size={14} />
-              Future-Proof Infrastructure
+              Enterprise Command Core
             </div>
-            <h1 className="text-6xl lg:text-8xl font-black text-slate-900 tracking-tighter leading-[0.9] mb-8">
-              Scale Your <br/>
+            <h1 className="text-6xl lg:text-8xl font-black text-slate-900 tracking-tighter leading-[0.85] mb-8">
+              Govern <br/>
               <span className="relative inline-block text-transparent bg-clip-text bg-gradient-to-r from-[#EA4643] via-red-600 to-[#EA4643] bg-[length:200%_auto] animate-text-shimmer">
-                Vision
-              </span> <br/>
-              Intelligently.
+                Progress.
+              </span>
             </h1>
-            <p className="text-xl text-slate-500 mb-12 leading-relaxed max-w-xl mx-auto lg:mx-0 font-medium">
-              Eliminate fragmentation. <strong>QITPES ERP</strong> harmonizes complex construction lifecycles into one fluid, automated command center.
+            <p className="text-xl lg:text-2xl text-slate-500 mb-12 leading-relaxed max-w-xl mx-auto lg:mx-0 font-medium opacity-80">
+              QITPES is more than software—it's a high-precision nervous system for complex infrastructure cycles.
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center lg:justify-start">
               <a 
                 href={ERP_URL} 
                 target="_self"
-                className="relative overflow-hidden group flex items-center justify-center bg-[#EA4643] text-white px-12 py-6 rounded-2xl text-xl font-black hover:bg-[#D13D3A] transition-all shadow-2xl shadow-red-200"
+                className="relative overflow-hidden group flex items-center justify-center bg-[#EA4643] text-white px-12 py-6 rounded-3xl text-xl font-black hover:bg-[#D13D3A] transition-all shadow-xl shadow-red-200 transform hover:scale-105"
               >
                 <span className="relative z-10 flex items-center">
-                  Get Started Now
+                  Deploy Command Center
                   <ChevronRight className="ml-2 group-hover:translate-x-2 transition-transform" />
                 </span>
                 <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent to-white opacity-25 group-hover:animate-shine" />
@@ -182,28 +189,271 @@ const Hero = () => {
             </div>
           </div>
           
-          <div className={`relative hidden lg:block transition-all duration-1000 delay-500 ${isVisible ? 'translate-x-0 opacity-100 scale-100' : 'translate-x-20 opacity-0 scale-95'}`}>
-            <div className="relative z-10 p-4 bg-white/50 backdrop-blur-md rounded-[4rem] shadow-2xl border border-white overflow-hidden h-[550px] w-full group">
+          <div className={`relative hidden lg:block transition-all duration-1000 delay-500 cubic-bezier ${isVisible ? 'translate-x-0 opacity-100 scale-100' : 'translate-x-20 opacity-0 scale-95'}`}>
+            <div className="relative z-10 p-6 bg-white/40 backdrop-blur-md rounded-[5rem] shadow-3xl border border-white overflow-hidden h-[650px] w-full group">
               {SLIDESHOW_IMAGES.map((img, idx) => (
                 <div 
                   key={idx}
-                  className={`absolute inset-4 rounded-[3.5rem] overflow-hidden transition-all duration-[1500ms] ease-in-out ${idx === currentSlide ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-110 translate-y-4'}`}
+                  className={`absolute inset-6 rounded-[4.5rem] overflow-hidden transition-all duration-[1500ms] ease-in-out ${idx === currentSlide ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-110 translate-y-8'}`}
                 >
                   <img 
                     src={img} 
-                    alt={`Construction Project ${idx + 1}`} 
-                    className="w-full h-full object-cover transition-transform duration-[10000ms] group-hover:scale-110"
+                    alt={`Infrastructure Lifecycle ${idx + 1}`} 
+                    className="w-full h-full object-cover transition-transform duration-[15000ms] group-hover:scale-110"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-tr from-red-900/40 via-transparent to-transparent"></div>
-                  <div className="absolute top-10 left-10 backdrop-blur-md bg-white/10 px-6 py-4 rounded-3xl border border-white/20 shadow-2xl transition-transform duration-700 hover:scale-105">
-                    <div className="text-white text-2xl font-black tracking-tighter">
-                      QITPES <span className="text-red-400">ERP</span>
+                  <div className="absolute inset-0 bg-gradient-to-tr from-red-950/60 via-transparent to-transparent"></div>
+                  <div className="absolute bottom-12 left-12 backdrop-blur-xl bg-black/30 px-8 py-5 rounded-3xl border border-white/20 shadow-2xl">
+                    <div className="text-white text-3xl font-black tracking-tighter">
+                      PHASE <span className="text-[#EA4643]">{idx + 1 < 10 ? `0${idx + 1}` : idx + 1}</span>
                     </div>
+                    <div className="text-white/60 text-xs font-bold uppercase tracking-widest mt-1">Live Operational Sync</div>
                   </div>
                 </div>
               ))}
             </div>
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] h-[140%] bg-gradient-to-br from-red-100/50 to-orange-50/50 rounded-full blur-[140px] -z-10 animate-pulse-slow"></div>
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150%] h-[150%] bg-gradient-to-br from-red-100/30 to-orange-50/30 rounded-full blur-[160px] -z-10 animate-pulse-slow"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const TechnicalArchitecture = () => {
+  const { isVisible, domRef } = useScrollReveal();
+  const layers = [
+    { title: "API Gateway", icon: GitBranch, desc: "Restful & GraphQL interfaces for seamless enterprise integration." },
+    { title: "Sync Engine", icon: RefreshCw, desc: "Real-time state management between remote sites and head office." },
+    { title: "Vault Core", icon: ShieldEllipsis, desc: "Hardware-level encryption for fiscal and sensitive project data." },
+    { title: "BI Processor", icon: Activity, desc: "High-concurrency data crunching for instant site-to-dashboard reporting." }
+  ];
+
+  return (
+    <section id="architecture" ref={domRef} className="py-40 bg-slate-950 text-white overflow-hidden relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className={`grid lg:grid-cols-2 gap-32 items-center transition-all duration-1000 cubic-bezier ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
+          <div className="space-y-12">
+            <div className="space-y-6">
+              <div className="text-[#EA4643] font-black text-xs uppercase tracking-[0.4em]">Infrastructure Stack</div>
+              <h2 className="text-5xl lg:text-6xl font-black tracking-tighter leading-none">The Digital <br/>Architect's Stack.</h2>
+              <p className="text-xl text-white/60 font-medium leading-relaxed max-w-lg">
+                Engineered for 99.99% reliability in low-bandwidth environments. Our edge-native core ensures site data is never lost.
+              </p>
+            </div>
+            <div className="grid sm:grid-cols-2 gap-8">
+              {layers.map((layer, idx) => (
+                <div 
+                  key={idx} 
+                  className={`p-8 bg-white/5 border border-white/10 rounded-[2.5rem] hover:bg-white/10 hover:border-[#EA4643]/30 transition-all duration-700 cubic-bezier group ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+                  style={{ transitionDelay: `${idx * 150}ms` }}
+                >
+                  <div className="w-12 h-12 bg-red-600/20 text-[#EA4643] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                    <layer.icon size={24} />
+                  </div>
+                  <h4 className="text-xl font-black mb-3">{layer.title}</h4>
+                  <p className="text-sm text-white/40 leading-relaxed">{layer.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className={`relative transition-all duration-1000 delay-500 cubic-bezier ${isVisible ? 'scale-100 opacity-100' : 'scale-90 opacity-0'}`}>
+             <div className="absolute inset-0 bg-[#EA4643]/20 blur-[120px] rounded-full animate-pulse-slow"></div>
+             <div className="relative border border-white/10 rounded-[4rem] p-12 bg-white/5 backdrop-blur-3xl shadow-3xl">
+                <div className="space-y-10">
+                   {[1, 2, 3].map((v) => (
+                     <div key={v} className="flex items-center space-x-6 p-6 bg-white/5 rounded-3xl border border-white/5 hover:bg-white/10 transition-all">
+                        <div className="w-4 h-4 rounded-full bg-[#EA4643] animate-ping"></div>
+                        <div className="flex-1 h-2 bg-white/10 rounded-full overflow-hidden">
+                           <div className="h-full bg-gradient-to-r from-[#EA4643] to-orange-400 animate-progress" style={{ width: '85%' }}></div>
+                        </div>
+                        <span className="font-black text-xs opacity-50">NODE_0{v}_UP</span>
+                     </div>
+                   ))}
+                </div>
+                <div className="mt-12 text-center">
+                   <MonitorCheck size={48} className="mx-auto text-[#EA4643] mb-4" />
+                   <div className="text-xs font-black uppercase tracking-widest text-white/40">Status: Optimized</div>
+                </div>
+             </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const DigitalTwin = () => {
+  const { isVisible, domRef } = useScrollReveal();
+  return (
+    <section ref={domRef} className="py-40 bg-white overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid lg:grid-cols-2 gap-24 items-center">
+          <div className={`order-2 lg:order-1 transition-all duration-1000 cubic-bezier ${isVisible ? 'translate-x-0 opacity-100' : '-translate-x-20 opacity-0'}`}>
+            <div className="relative rounded-[5rem] overflow-hidden shadow-3xl border border-slate-100 group">
+              <img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?q=80&w=1200&auto=format&fit=crop" className="w-full aspect-[4/5] object-cover group-hover:scale-110 transition-transform duration-[5s]" alt="BIM Modeling" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#EA4643]/40 to-transparent"></div>
+              <div className="absolute top-10 left-10 p-6 bg-white/80 backdrop-blur-md rounded-3xl border border-white shadow-xl">
+                <Boxes size={40} className="text-[#EA4643] mb-2" />
+                <div className="text-xs font-black text-slate-900 uppercase tracking-widest">BIM Ready</div>
+              </div>
+            </div>
+          </div>
+          <div className={`order-1 lg:order-2 space-y-10 transition-all duration-1000 delay-300 cubic-bezier ${isVisible ? 'translate-x-0 opacity-100' : 'translate-x-20 opacity-0'}`}>
+            <div className="text-[#EA4643] font-black text-xs uppercase tracking-[0.4em]">Visual Control</div>
+            <h2 className="text-5xl lg:text-7xl font-black text-slate-950 tracking-tighter leading-[0.9]">Digital Twin <br/>Visualization.</h2>
+            <p className="text-xl lg:text-2xl text-slate-500 font-medium leading-relaxed max-w-xl">
+              Map your physical assets directly into QITPES. Track building progress via 3D models and spatial data integration.
+            </p>
+            <div className="space-y-6">
+               <div className="flex items-start space-x-6 p-6 bg-slate-50 rounded-[2.5rem] border border-slate-100 hover:bg-white hover:shadow-2xl transition-all duration-500">
+                  <div className="p-4 bg-[#EA4643] text-white rounded-2xl flex-shrink-0">
+                    <Maximize size={24} />
+                  </div>
+                  <div>
+                    <h4 className="text-xl font-black text-slate-900 mb-2">Spatial Overlays</h4>
+                    <p className="text-sm text-slate-500 font-medium">Overlay architectural drawings with real-time site footage for audit perfection.</p>
+                  </div>
+               </div>
+               <div className="flex items-start space-x-6 p-6 bg-slate-50 rounded-[2.5rem] border border-slate-100 hover:bg-white hover:shadow-2xl transition-all duration-500">
+                  <div className="p-4 bg-[#EA4643] text-white rounded-2xl flex-shrink-0">
+                    <Zap size={24} />
+                  </div>
+                  <div>
+                    <h4 className="text-xl font-black text-slate-900 mb-2">Live Sensor Feeds</h4>
+                    <p className="text-sm text-slate-500 font-medium">IoT telemetry for machinery, cement silos, and crane utilization integrated live.</p>
+                  </div>
+               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const WorkflowBuilder = () => {
+  const { isVisible, domRef } = useScrollReveal();
+  return (
+    <section ref={domRef} className="py-40 bg-slate-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div className={`max-w-3xl mx-auto space-y-8 transition-all duration-1000 cubic-bezier ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
+          <div className="text-[#EA4643] font-black text-xs uppercase tracking-[0.4em]">Logic Engine</div>
+          <h2 className="text-5xl lg:text-7xl font-black text-slate-950 tracking-tighter leading-none">Infinite Workflow <br/>Precision.</h2>
+          <p className="text-xl text-slate-500 font-medium">Define your company's DNA with custom approval tiers and automation triggers.</p>
+        </div>
+        
+        <div className="mt-24 grid lg:grid-cols-3 gap-8 text-left">
+           {[
+             { title: "Dynamic Approvals", icon: Workflow, desc: "Route financial requests based on value, project, and role seniority." },
+             { title: "Audit Persistence", icon: History, desc: "Every single change, rejection, and approval is logged in the permanent ledger." },
+             { title: "Trigger Events", icon: Zap, desc: "Automate purchase orders when site inventory falls below critical safety levels." }
+           ].map((item, idx) => (
+             <div 
+                key={idx} 
+                className={`p-12 bg-white rounded-[4rem] border border-slate-100 shadow-xl hover:shadow-3xl hover:-translate-y-4 transition-all duration-700 cubic-bezier group ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}
+                style={{ transitionDelay: `${idx * 150}ms` }}
+             >
+                <div className="w-16 h-16 bg-red-50 text-[#EA4643] rounded-3xl flex items-center justify-center mb-10 group-hover:bg-[#EA4643] group-hover:text-white transition-all duration-500">
+                  <item.icon size={32} />
+                </div>
+                <h4 className="text-3xl font-black text-slate-950 mb-6 tracking-tight">{item.title}</h4>
+                <p className="text-slate-500 font-medium leading-relaxed">{item.desc}</p>
+             </div>
+           ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const SafetyProtocol = () => {
+  const { isVisible, domRef } = useScrollReveal();
+  return (
+    <section id="safety" ref={domRef} className="py-40 bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className={`bg-[#EA4643] rounded-[6rem] p-12 lg:p-24 text-white relative overflow-hidden transition-all duration-1000 cubic-bezier ${isVisible ? 'scale-100 opacity-100' : 'scale-95 opacity-0 translate-y-8'}`}>
+          <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center relative z-10">
+            <div className={`space-y-8 transition-all duration-1000 delay-300 cubic-bezier ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-12'}`}>
+              <div className="inline-flex items-center px-4 py-2 rounded-full bg-white/20 text-white text-[10px] font-black uppercase tracking-[0.4em]">Zero Incident Vision</div>
+              <h2 className="text-5xl lg:text-7xl font-black tracking-tighter leading-none">Safety & <br/>Compliance.</h2>
+              <p className="text-xl lg:text-2xl text-white/80 font-medium leading-relaxed max-w-lg">
+                Automate your site's health & safety protocols. From PPE compliance to labor insurance validation—we track it all.
+              </p>
+              <div className="grid grid-cols-2 gap-8 pt-4">
+                 <div>
+                    <div className="text-3xl lg:text-4xl font-black mb-1">100%</div>
+                    <div className="text-[9px] lg:text-[10px] uppercase font-black opacity-60 tracking-widest">Digital Log Completion</div>
+                 </div>
+                 <div>
+                    <div className="text-3xl lg:text-4xl font-black mb-1">AI</div>
+                    <div className="text-[9px] lg:text-[10px] uppercase font-black opacity-60 tracking-widest">Risk Assessment Engine</div>
+                 </div>
+              </div>
+            </div>
+            <div className={`relative flex justify-center lg:justify-end transition-all duration-1000 delay-500 cubic-bezier ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-90'}`}>
+              <div className="w-full max-w-md p-8 lg:p-12 bg-white/10 backdrop-blur-3xl rounded-[4rem] border border-white/20 shadow-4xl text-center group">
+                 <ShieldCheck size={80} className="mx-auto text-white mb-8 animate-pulse" />
+                 <div className="space-y-4">
+                    <div className="p-4 bg-white text-[#EA4643] rounded-3xl font-black text-lg lg:text-xl shadow-xl transition-transform group-hover:scale-105">Audit Protection Active</div>
+                    <div className="p-4 bg-white/10 rounded-3xl font-bold text-xs lg:text-sm">Regulatory Shield: 24/7 Monitoring</div>
+                 </div>
+              </div>
+            </div>
+          </div>
+          <div className="absolute top-0 right-0 w-full h-full bg-[radial-gradient(circle_at_bottom_right,_rgba(255,255,255,0.1)_0%,_transparent_60%)]"></div>
+          <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent to-white opacity-10 group-hover:animate-shine" />
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const ResourceOptimization = () => {
+  const { isVisible, domRef } = useScrollReveal();
+  return (
+    <section ref={domRef} className="py-40 bg-white relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid lg:grid-cols-2 gap-32 items-center">
+          <div className={`transition-all duration-1000 cubic-bezier ${isVisible ? 'translate-x-0 opacity-100' : '-translate-x-20 opacity-0'}`}>
+            <div className="space-y-10">
+              <div className="text-[#EA4643] font-black text-xs uppercase tracking-[0.4em]">Efficiency Hub</div>
+              <h2 className="text-5xl lg:text-7xl font-black text-slate-950 tracking-tighter leading-[0.9]">Resource <br/>Synergy.</h2>
+              <p className="text-xl lg:text-2xl text-slate-500 font-medium leading-relaxed">
+                Balancing complex logistics between thousands of labor shifts and millions in raw material stock.
+              </p>
+              <div className="space-y-4">
+                {["Predictive Material Reordering", "Labor Capacity Balancing", "Machinery Fleet Health Tracking"].map((txt, i) => (
+                  <div key={i} className={`flex items-center space-x-4 p-5 bg-slate-50 rounded-3xl border border-slate-100 transition-all duration-700 cubic-bezier ${isVisible ? 'translate-x-0 opacity-100' : '-translate-x-8 opacity-0'}`} style={{ transitionDelay: `${i * 150}ms` }}>
+                    <CheckCircle2 size={24} className="text-[#EA4643] flex-shrink-0" />
+                    <span className="font-black text-slate-800">{txt}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+          <div className={`relative transition-all duration-1000 delay-500 cubic-bezier ${isVisible ? 'translate-x-0 opacity-100' : 'translate-x-20 opacity-0'}`}>
+             <div className="grid grid-cols-2 gap-8">
+                <div className="space-y-8 mt-12">
+                   <div className="p-10 bg-[#EA4643] text-white rounded-[4rem] shadow-2xl hover:scale-105 transition-all">
+                      <Truck size={48} className="mb-6" />
+                      <div className="text-2xl lg:text-3xl font-black">LOGISTICS</div>
+                   </div>
+                   <div className="p-10 bg-slate-900 text-white rounded-[4rem] shadow-2xl hover:scale-105 transition-all">
+                      <Warehouse size={48} className="mb-6" />
+                      <div className="text-2xl lg:text-3xl font-black">STOCK</div>
+                   </div>
+                </div>
+                <div className="space-y-8">
+                   <div className="p-10 bg-slate-50 text-[#EA4643] rounded-[4rem] border border-slate-200 shadow-2xl hover:scale-105 transition-all">
+                      <Users size={48} className="mb-6" />
+                      <div className="text-2xl lg:text-3xl font-black">LABOR</div>
+                   </div>
+                   <div className="p-10 bg-slate-100 text-slate-950 rounded-[4rem] border border-slate-200 shadow-2xl hover:scale-105 transition-all">
+                      <Search size={48} className="mb-6" />
+                      <div className="text-2xl lg:text-3xl font-black">FINANCE</div>
+                   </div>
+                </div>
+             </div>
           </div>
         </div>
       </div>
@@ -242,21 +492,21 @@ const RoleExperience = () => {
   return (
     <section id="roles" ref={domRef} className="py-32 bg-white relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className={`text-center max-w-3xl mx-auto mb-20 transition-all duration-1000 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
+        <div className={`text-center max-w-3xl mx-auto mb-20 transition-all duration-1000 cubic-bezier ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
           <div className="text-[#EA4643] font-black text-xs uppercase tracking-[0.4em] mb-4">Role-Based Intelligence</div>
-          <h2 className="text-5xl lg:text-7xl font-black text-slate-950 tracking-tighter">Experience Precision</h2>
+          <h2 className="text-4xl lg:text-6xl font-black text-slate-950 tracking-tighter">Experience Precision</h2>
         </div>
         
         <div className="grid lg:grid-cols-12 gap-12 items-center">
-          <div className="lg:col-span-5 space-y-4">
+          <div className={`lg:col-span-5 space-y-4 transition-all duration-1000 delay-300 cubic-bezier ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-12'}`}>
             {roles.map((role, idx) => (
               <button 
                 key={idx}
                 onClick={() => setActiveRole(idx)}
-                className={`w-full text-left p-8 rounded-[2.5rem] transition-all duration-500 border ${activeRole === idx ? 'bg-[#EA4643] text-white border-[#EA4643] shadow-2xl scale-105' : 'bg-slate-50 text-slate-900 border-slate-100 hover:bg-slate-100'}`}
+                className={`w-full text-left p-8 rounded-[2.5rem] transition-all duration-500 border relative overflow-hidden group/btn ${activeRole === idx ? 'bg-[#EA4643] text-white border-[#EA4643] shadow-2xl scale-105' : 'bg-slate-50 text-slate-900 border-slate-100 hover:bg-slate-100'}`}
               >
-                <div className="flex items-center space-x-6">
-                  <div className={`p-4 rounded-2xl ${activeRole === idx ? 'bg-white/20' : 'bg-red-600/10 text-[#EA4643]'}`}>
+                <div className="flex items-center space-x-6 relative z-10">
+                  <div className={`p-4 rounded-2xl transition-colors ${activeRole === idx ? 'bg-white/20' : 'bg-red-600/10 text-[#EA4643]'}`}>
                     <role.icon size={28} />
                   </div>
                   <div>
@@ -264,20 +514,21 @@ const RoleExperience = () => {
                     <div className="text-2xl font-black tracking-tight">{role.title}</div>
                   </div>
                 </div>
+                {activeRole === idx && <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent animate-mirror-sweep"></div>}
               </button>
             ))}
           </div>
           
-          <div className="lg:col-span-7">
-            <div className="p-12 bg-white rounded-[4rem] border border-slate-100 shadow-3xl relative overflow-hidden group">
+          <div className={`lg:col-span-7 transition-all duration-1000 delay-500 cubic-bezier ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-12'}`}>
+            <div className="p-12 bg-white rounded-[4rem] border border-slate-100 shadow-3xl relative overflow-hidden group min-h-[450px] flex flex-col justify-center">
               <div className="absolute top-0 right-0 w-64 h-64 bg-red-50 rounded-full translate-x-1/2 -translate-y-1/2 blur-3xl group-hover:scale-150 transition-transform duration-1000"></div>
-              <div className="relative z-10 animate-fade-in" key={activeRole}>
-                <h3 className="text-4xl font-black text-slate-950 mb-6 tracking-tight">{roles[activeRole].title} Module</h3>
-                <p className="text-xl text-slate-500 leading-relaxed mb-10 font-medium">{roles[activeRole].desc}</p>
+              <div className={`relative z-10 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} key={activeRole}>
+                <h3 className="text-3xl lg:text-4xl font-black text-slate-950 mb-6 tracking-tight">{roles[activeRole].title} Module</h3>
+                <p className="text-lg lg:text-xl text-slate-500 leading-relaxed mb-10 font-medium">{roles[activeRole].desc}</p>
                 <div className="grid sm:grid-cols-2 gap-4">
                   {roles[activeRole].features.map((f, i) => (
-                    <div key={i} className="flex items-center space-x-3 p-4 bg-slate-50 rounded-2xl border border-slate-100">
-                      <div className="w-8 h-8 rounded-full bg-[#EA4643] text-white flex items-center justify-center flex-shrink-0">
+                    <div key={i} className="flex items-center space-x-3 p-4 bg-slate-50 rounded-2xl border border-slate-100 group/item hover:bg-white hover:border-[#EA4643]/20 transition-all duration-300">
+                      <div className="w-8 h-8 rounded-full bg-[#EA4643] text-white flex items-center justify-center flex-shrink-0 group-hover/item:scale-110 transition-transform">
                         <CheckCircle2 size={16} />
                       </div>
                       <span className="font-bold text-slate-800">{f}</span>
@@ -309,14 +560,18 @@ const EcosystemHub = () => {
     <section id="integrations" ref={domRef} className="py-32 bg-slate-950 text-white overflow-hidden relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid lg:grid-cols-2 gap-24 items-center">
-          <div className={`transition-all duration-1000 ${isVisible ? 'translate-x-0 opacity-100' : '-translate-x-20 opacity-0'}`}>
-            <h2 className="text-6xl font-black mb-10 tracking-tighter leading-none">The Unified <br/><span className="text-[#EA4643]">Nervous System.</span></h2>
+          <div className={`transition-all duration-1000 cubic-bezier ${isVisible ? 'translate-x-0 opacity-100' : '-translate-x-20 opacity-0'}`}>
+            <h2 className="text-5xl lg:text-6xl font-black mb-10 tracking-tighter leading-none">The Unified <br/><span className="text-[#EA4643]">Nervous System.</span></h2>
             <p className="text-xl text-red-100/60 leading-relaxed mb-12 font-medium">
               QITPES doesn't work in isolation. Our platform is a central hub that connects your existing financial, hardware, and biometric infrastructure into one single source of truth.
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-6">
               {integrations.map((item, idx) => (
-                <div key={idx} className="p-8 bg-white/5 border border-white/10 rounded-3xl hover:bg-white/10 transition-all group text-center cursor-default">
+                <div 
+                  key={idx} 
+                  className={`p-8 bg-white/5 border border-white/10 rounded-3xl hover:bg-white/10 transition-all duration-700 cubic-bezier group text-center cursor-default hover:border-[#EA4643]/40 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}
+                  style={{ transitionDelay: `${idx * 150}ms` }}
+                >
                   <div className={`w-14 h-14 mx-auto rounded-2xl bg-white/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform ${item.color}`}>
                     <item.icon size={28} />
                   </div>
@@ -326,8 +581,7 @@ const EcosystemHub = () => {
             </div>
           </div>
           
-          <div className="relative">
-             {/* Abstract Connectivity Visualization */}
+          <div className={`relative transition-all duration-1000 delay-500 cubic-bezier ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-90'}`}>
              <div className="relative w-full aspect-square flex items-center justify-center">
                 <div className="absolute inset-0 border-2 border-dashed border-red-500/20 rounded-full animate-spin-slow"></div>
                 <div className="absolute inset-16 border border-red-500/30 rounded-full"></div>
@@ -335,7 +589,6 @@ const EcosystemHub = () => {
                   <Globe size={64} className="text-white mb-2" />
                   <span className="text-xl font-black tracking-tighter">QITPES</span>
                 </div>
-                {/* Floating "Node" points */}
                 {[0, 60, 120, 180, 240, 300].map((deg, idx) => (
                   <div key={idx} className="absolute w-12 h-12 bg-white rounded-2xl shadow-xl flex items-center justify-center" style={{ transform: `rotate(${deg}deg) translate(220px) rotate(-${deg}deg)` }}>
                     <div className="w-4 h-4 bg-[#EA4643] rounded-full animate-ping"></div>
@@ -360,11 +613,11 @@ const ROICalculator = () => {
   return (
     <section id="calculator" ref={domRef} className="py-32 bg-white relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className={`bg-red-50 rounded-[5rem] p-16 lg:p-28 transition-all duration-1000 ${isVisible ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`}>
+        <div className={`bg-red-50 rounded-[5rem] p-16 lg:p-28 transition-all duration-1000 cubic-bezier ${isVisible ? 'scale-100 opacity-100 translate-y-0' : 'scale-95 opacity-0 translate-y-12'}`}>
           <div className="grid lg:grid-cols-2 gap-24 items-center">
-            <div>
+            <div className={`transition-all duration-1000 delay-300 cubic-bezier ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-12'}`}>
               <div className="text-[#EA4643] font-black text-xs uppercase tracking-[0.4em] mb-4">Value Proposition</div>
-              <h2 className="text-5xl font-black text-slate-950 mb-8 tracking-tighter leading-tight">Calculate Your <br/><span className="text-[#EA4643]">Efficiency Gains.</span></h2>
+              <h2 className="text-4xl lg:text-5xl font-black text-slate-950 mb-8 tracking-tighter leading-tight">Calculate Your <br/><span className="text-[#EA4643]">Efficiency Gains.</span></h2>
               <p className="text-xl text-slate-500 mb-12 font-medium">Estimate how much project value is leaked due to manual processing and how QITPES recovers it.</p>
               
               <div className="space-y-10">
@@ -384,11 +637,11 @@ const ROICalculator = () => {
                 </div>
                 
                 <div className="grid grid-cols-2 gap-6">
-                  <div className="p-8 bg-white rounded-3xl shadow-xl border border-red-100">
+                  <div className={`p-8 bg-white rounded-3xl shadow-xl border border-red-100 hover:shadow-2xl transition-all duration-700 cubic-bezier ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
                     <div className="text-[#EA4643] font-black text-4xl mb-2">${savings}M</div>
                     <div className="text-[10px] uppercase tracking-widest font-black text-slate-400">Projected Leakage Recovery</div>
                   </div>
-                  <div className="p-8 bg-white rounded-3xl shadow-xl border border-red-100">
+                  <div className={`p-8 bg-white rounded-3xl shadow-xl border border-red-100 hover:shadow-2xl transition-all duration-700 delay-150 cubic-bezier ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
                     <div className="text-[#EA4643] font-black text-4xl mb-2">{timeGained} Days</div>
                     <div className="text-[10px] uppercase tracking-widest font-black text-slate-400">Operational Time Gained</div>
                   </div>
@@ -396,7 +649,7 @@ const ROICalculator = () => {
               </div>
             </div>
             
-            <div className="relative group">
+            <div className={`relative group transition-all duration-1000 delay-500 cubic-bezier ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-12'}`}>
               <div className="absolute inset-0 bg-[#EA4643] rounded-[4rem] blur-[60px] opacity-20 group-hover:opacity-40 transition-opacity"></div>
               <div className="relative bg-white p-12 rounded-[4rem] border border-red-100 shadow-3xl text-center overflow-hidden">
                 <Target size={64} className="text-[#EA4643] mx-auto mb-8 animate-bounce-subtle" />
@@ -427,13 +680,17 @@ const ComplianceVault = () => {
   return (
     <section ref={domRef} className="py-32 bg-white relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className={`text-center max-w-3xl mx-auto mb-20 transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
-          <h2 className="text-5xl lg:text-7xl font-black text-slate-950 tracking-tighter mb-6">Built for Governance.</h2>
+        <div className={`text-center max-w-3xl mx-auto mb-20 transition-all duration-1000 cubic-bezier ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
+          <h2 className="text-4xl lg:text-6xl font-black text-slate-950 tracking-tighter mb-6">Built for Governance.</h2>
           <p className="text-xl text-slate-500 font-medium">Compliance shouldn't be a headache. We've automated the entire paper trail.</p>
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {compliance.map((item, idx) => (
-            <div key={idx} className={`p-10 bg-slate-50 rounded-[3rem] border border-slate-100 hover:bg-white hover:shadow-3xl transition-all duration-500 group transition-all duration-1000 delay-${idx * 150} ${isVisible ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`}>
+            <div 
+              key={idx} 
+              className={`p-10 bg-slate-50 rounded-[3rem] border border-slate-100 hover:bg-white hover:shadow-3xl transition-all duration-700 cubic-bezier group ${isVisible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-12 scale-95'}`}
+              style={{ transitionDelay: `${idx * 150}ms` }}
+            >
               <div className="w-16 h-16 bg-[#EA4643] text-white rounded-2xl flex items-center justify-center mb-8 group-hover:rotate-12 transition-transform shadow-xl">
                 <item.icon size={32} />
               </div>
@@ -454,49 +711,47 @@ const GlobalCommandCenter = () => {
     <section ref={domRef} className="py-32 bg-slate-900 text-white overflow-hidden relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid lg:grid-cols-2 gap-24 items-center">
-          <div className={`transition-all duration-1000 ${isVisible ? 'translate-x-0 opacity-100' : '-translate-x-20 opacity-0'}`}>
+          <div className={`transition-all duration-1000 cubic-bezier ${isVisible ? 'translate-x-0 opacity-100' : '-translate-x-20 opacity-0'}`}>
             <div className="inline-flex items-center px-4 py-2 rounded-full bg-red-900 text-red-400 text-[10px] font-black uppercase tracking-[0.4em] mb-10 border border-red-800">Distributed Power</div>
-            <h2 className="text-6xl font-black mb-10 tracking-tighter leading-[0.85]">Global Project <br/><span className="text-[#EA4643]">Command Hub.</span></h2>
+            <h2 className="text-5xl lg:text-6xl font-black mb-10 tracking-tighter leading-[0.85]">Global Project <br/><span className="text-[#EA4643]">Command Hub.</span></h2>
             <p className="text-2xl text-slate-400 font-medium leading-relaxed mb-12">
               Scale across 480+ cities with our edge-native synchronization. Manage remote sites with limited connectivity using our offline-first core.
             </p>
             <div className="flex flex-wrap gap-8">
-              <div className="text-center">
+              <div className={`text-center transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
                 <div className="text-5xl font-black text-white mb-2">480+</div>
                 <div className="text-[10px] uppercase tracking-widest font-black text-[#EA4643]">Active Cities</div>
               </div>
-              <div className="text-center border-l border-white/10 pl-8">
+              <div className={`text-center border-l border-white/10 pl-8 transition-all duration-1000 delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
                 <div className="text-5xl font-black text-white mb-2">99.9%</div>
                 <div className="text-[10px] uppercase tracking-widest font-black text-[#EA4643]">Uptime Reliability</div>
               </div>
             </div>
           </div>
           
-          <div className="relative">
-            <div className={`transition-all duration-1000 delay-500 ${isVisible ? 'scale-100 opacity-100' : 'scale-90 opacity-0'}`}>
-              <div className="relative bg-white/5 backdrop-blur-3xl rounded-[5rem] p-12 border border-white/10 shadow-3xl group overflow-hidden">
-                <MapPin className="text-[#EA4643] mb-8 animate-bounce" size={48} />
-                <div className="space-y-6">
-                  <div className="p-6 bg-white/5 rounded-3xl border border-white/5">
-                    <div className="text-sm font-black text-red-400 uppercase tracking-widest mb-2">Real-time Node Status</div>
-                    <div className="flex items-center space-x-3">
-                      <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-                      <span className="font-bold text-white">Active Global Synchronization</span>
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="p-4 bg-white/5 rounded-2xl border border-white/5 text-center">
-                      <div className="text-2xl font-black text-white">12ms</div>
-                      <div className="text-[9px] uppercase font-black text-slate-500">Latency Core</div>
-                    </div>
-                    <div className="p-4 bg-white/5 rounded-2xl border border-white/5 text-center">
-                      <div className="text-2xl font-black text-white">AES-256</div>
-                      <div className="text-[9px] uppercase font-black text-slate-500">End-to-End</div>
-                    </div>
+          <div className={`relative transition-all duration-1000 delay-500 cubic-bezier ${isVisible ? 'scale-100 opacity-100 rotate-0' : 'scale-90 opacity-0 -rotate-3'}`}>
+            <div className="relative bg-white/5 backdrop-blur-3xl rounded-[5rem] p-12 border border-white/10 shadow-3xl group overflow-hidden">
+              <MapPin className="text-[#EA4643] mb-8 animate-bounce" size={48} />
+              <div className="space-y-6">
+                <div className="p-6 bg-white/5 rounded-3xl border border-white/5">
+                  <div className="text-sm font-black text-red-400 uppercase tracking-widest mb-2">Real-time Node Status</div>
+                  <div className="flex items-center space-x-3">
+                    <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                    <span className="font-bold text-white">Active Global Synchronization</span>
                   </div>
                 </div>
-                <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent to-white opacity-10 group-hover:animate-shine" />
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="p-4 bg-white/5 rounded-2xl border border-white/5 text-center">
+                    <div className="text-2xl font-black text-white">12ms</div>
+                    <div className="text-[9px] uppercase font-black text-slate-500">Latency Core</div>
+                  </div>
+                  <div className="p-4 bg-white/5 rounded-2xl border border-white/5 text-center">
+                    <div className="text-2xl font-black text-white">AES-256</div>
+                    <div className="text-[9px] uppercase font-black text-slate-500">End-to-End</div>
+                  </div>
+                </div>
               </div>
+              <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent to-white opacity-10 group-hover:animate-shine" />
             </div>
           </div>
         </div>
@@ -516,16 +771,47 @@ const StatsStrip = () => {
   ];
 
   return (
-    <div ref={domRef} className="bg-white border-y border-slate-100 py-20 relative overflow-hidden">
+    <div ref={domRef} className="bg-white border-t border-slate-100 py-24 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-12 text-center">
           {stats.map((stat, idx) => (
             <div 
               key={idx} 
-              className={`transition-all duration-1000 delay-${idx * 200} ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
+              className={`transition-all duration-700 cubic-bezier ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+              style={{ transitionDelay: `${idx * 150}ms` }}
             >
-              <div className="text-6xl font-black text-[#EA4643] tracking-tighter mb-2">{stat.value}</div>
-              <div className="text-[11px] uppercase tracking-[0.4em] font-black text-slate-400">{stat.label}</div>
+              <div className="text-6xl lg:text-7xl font-black text-[#EA4643] tracking-tighter mb-4">{stat.value}</div>
+              <div className="text-[12px] uppercase tracking-[0.4em] font-black text-slate-400">{stat.label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const TrustBadges = () => {
+  const { isVisible, domRef } = useScrollReveal();
+  const badges = [
+    { icon: Shield, label: "ISO 27001 Certified" },
+    { icon: Lock, label: "SOC 2 Type II" },
+    { icon: Scale, label: "GDPR Compliant" },
+    { icon: FileCheck, label: "HIPAA Ready" },
+    { icon: Globe, label: "RERA Compliant" }
+  ];
+
+  return (
+    <div ref={domRef} className="bg-white border-b border-slate-100 pb-12 overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-wrap justify-center items-center gap-x-12 gap-y-6 opacity-60">
+          {badges.map((badge, idx) => (
+            <div 
+              key={idx} 
+              className={`flex items-center space-x-2 text-slate-400 grayscale hover:grayscale-0 transition-all duration-700 cubic-bezier ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+              style={{ transitionDelay: `${(idx + 4) * 100}ms` }}
+            >
+              <badge.icon size={14} className="flex-shrink-0" />
+              <span className="text-[10px] font-black uppercase tracking-[0.2em]">{badge.label}</span>
             </div>
           ))}
         </div>
@@ -554,16 +840,17 @@ const Solutions = () => {
   return (
     <section id="modules" ref={domRef} className="py-32 bg-slate-50/50 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className={`text-center max-w-3xl mx-auto mb-24 transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
+        <div className={`text-center max-w-3xl mx-auto mb-24 transition-all duration-1000 cubic-bezier ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
           <div className="text-[#EA4643] font-black text-xs uppercase tracking-[0.4em] mb-6">Omni-Channel Operations</div>
-          <h2 className="text-5xl lg:text-8xl font-black text-slate-950 mb-8 tracking-tighter leading-none">THE CORE ENGINE</h2>
+          <h2 className="text-4xl lg:text-7xl font-black text-slate-950 mb-8 tracking-tighter leading-none">THE CORE ENGINE</h2>
           <p className="text-slate-500 text-xl font-medium">Precision engineering for the world's most demanding physical industries.</p>
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
           {modules.map((m, idx) => (
             <div 
               key={idx} 
-              className={`p-10 bg-white border border-slate-100 rounded-[3rem] shadow-xl shadow-red-900/5 hover:shadow-red-200/50 hover:-translate-y-4 transition-all duration-500 group relative overflow-hidden transition-all duration-1000 delay-${idx % 4 * 150} ${isVisible ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`}
+              className={`p-10 bg-white border border-slate-100 rounded-[3rem] shadow-xl shadow-red-900/5 hover:shadow-red-200/50 hover:-translate-y-4 transition-all duration-700 cubic-bezier group relative overflow-hidden ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}
+              style={{ transitionDelay: `${idx * 100}ms` }}
             >
               <div className="absolute inset-0 bg-gradient-to-br from-red-400/0 via-orange-400/0 to-red-400/0 group-hover:from-red-400/10 group-hover:via-orange-400/5 group-hover:to-red-400/10 transition-all duration-1000"></div>
               <div className="absolute top-0 right-0 w-32 h-32 bg-red-50/50 rounded-full translate-x-1/2 -translate-y-1/2 group-hover:scale-150 transition-transform duration-700"></div>
@@ -575,13 +862,16 @@ const Solutions = () => {
               <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent to-white opacity-20 group-hover:animate-shine" />
             </div>
           ))}
-          <div className={`p-10 bg-[#EA4643] rounded-[3rem] shadow-2xl flex flex-col justify-between group hover:scale-[1.05] transition-all duration-500 overflow-hidden relative transition-all duration-1000 delay-400 ${isVisible ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`}>
+          <div 
+            className={`p-10 bg-[#EA4643] rounded-[3rem] shadow-2xl flex flex-col justify-between group hover:scale-[1.05] transition-all duration-700 cubic-bezier overflow-hidden relative ${isVisible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-12 scale-95'}`}
+            style={{ transitionDelay: `1200ms` }}
+          >
             <div className="absolute inset-0 bg-gradient-to-br from-[#EA4643] via-red-700 to-red-800 bg-[length:200%_200%] animate-gradient-slow opacity-90"></div>
             <div className="relative z-10">
-              <h3 className="text-3xl font-black text-white mb-6 tracking-tight leading-tight">Infinite Scalability</h3>
+              <h3 className="text-2xl lg:text-3xl font-black text-white mb-6 tracking-tight leading-tight">Infinite Scalability</h3>
               <p className="text-red-100/80 leading-relaxed font-medium text-base">Custom built features for the modern builder. Your roadmap, our tech.</p>
             </div>
-            <a href={ERP_URL} target="_self" className="relative z-10 inline-flex items-center text-white font-black group mt-8 text-lg">
+            <a href={ERP_URL} target="_self" className="relative z-10 inline-flex items-center text-white font-black group mt-8 text-lg hover:translate-x-2 transition-transform">
               Launch System <ArrowRight size={20} className="ml-2 group-hover:translate-x-3 transition-transform duration-500" />
             </a>
             <div className="absolute bottom-0 right-0 w-48 h-48 bg-white/10 rounded-full translate-x-1/4 translate-y-1/4 blur-3xl animate-pulse"></div>
@@ -606,14 +896,18 @@ const Industries = () => {
     <section id="industries" ref={domRef} className="py-32 bg-white relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-24 items-center">
-          <div className={`transition-all duration-1000 ${isVisible ? 'translate-x-0 opacity-100' : '-translate-x-20 opacity-0'}`}>
-            <h2 className="text-6xl lg:text-9xl font-black text-slate-950 mb-10 tracking-tighter leading-[0.85]">Vertical <br/><span className="text-transparent bg-clip-text bg-gradient-to-br from-[#EA4643] to-red-700">Focus.</span></h2>
+          <div className={`transition-all duration-1000 cubic-bezier ${isVisible ? 'translate-x-0 opacity-100' : '-translate-x-20 opacity-0'}`}>
+            <h2 className="text-5xl lg:text-8xl font-black text-slate-950 mb-10 tracking-tighter leading-[0.85]">Vertical <br/><span className="text-transparent bg-clip-text bg-gradient-to-br from-[#EA4643] to-red-700">Focus.</span></h2>
             <p className="text-2xl text-slate-500 mb-12 font-medium leading-relaxed max-w-xl">
               From heavy civils to smart real estate, QITPES adapts to your industry's DNA.
             </p>
             <div className="grid sm:grid-cols-2 gap-x-12 gap-y-4">
               {industries.map((industry, idx) => (
-                <div key={idx} className="flex items-center space-x-4 border-b border-slate-50 py-5 group cursor-default">
+                <div 
+                  key={idx} 
+                  className={`flex items-center space-x-4 border-b border-slate-50 py-5 group cursor-default transition-all duration-700 cubic-bezier ${isVisible ? 'translate-x-0 opacity-100' : '-translate-x-12 opacity-0'}`}
+                  style={{ transitionDelay: `${idx * 100}ms` }}
+                >
                   <div className="w-8 h-8 rounded-full bg-red-50 text-[#EA4643] flex items-center justify-center transition-all group-hover:bg-[#EA4643] group-hover:text-white group-hover:rotate-12">
                     <CheckCircle2 size={16} />
                   </div>
@@ -622,7 +916,7 @@ const Industries = () => {
               ))}
             </div>
           </div>
-          <div className={`relative group transition-all duration-1000 delay-300 ${isVisible ? 'translate-x-0 opacity-100' : 'translate-x-20 opacity-0'}`}>
+          <div className={`relative group transition-all duration-1000 delay-500 cubic-bezier ${isVisible ? 'translate-x-0 opacity-100 scale-100' : 'translate-x-20 opacity-0 scale-95'}`}>
             <div className="rounded-[5rem] overflow-hidden shadow-[0_50px_100px_-20px_rgba(234,70,67,0.3)] transform transition-transform duration-700 group-hover:scale-[1.02]">
               <img 
                 src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=1200&auto=format&fit=crop" 
@@ -630,7 +924,7 @@ const Industries = () => {
                 className="w-full h-full object-cover transition-all duration-1000 group-hover:grayscale-0 grayscale-[0.2]"
               />
             </div>
-            <div className="absolute -top-12 -right-12 bg-white/80 backdrop-blur-xl p-12 rounded-[4rem] shadow-2xl border border-white/50 hidden md:flex flex-col items-center animate-float">
+            <div className={`absolute -top-12 -right-12 bg-white/80 backdrop-blur-xl p-12 rounded-[4rem] shadow-2xl border border-white/50 hidden md:flex flex-col items-center transition-all duration-700 delay-700 ${isVisible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-12 scale-90'}`}>
               <Gem size={56} className="text-[#EA4643] mb-4 animate-pulse" />
               <div className="text-xs font-black uppercase tracking-[0.4em] text-slate-900">Elite Standards</div>
             </div>
@@ -652,19 +946,20 @@ const Implementation = () => {
   return (
     <section id="implementation" ref={domRef} className="py-40 bg-red-950 text-white overflow-hidden relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-        <div className={`text-red-400 font-black text-xs uppercase tracking-[0.4em] mb-10 transition-all duration-700 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>Excellence Defined</div>
-        <h2 className={`text-6xl lg:text-9xl font-black mb-24 tracking-tighter leading-none transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>RAPID <br/>DEPLOYMENT</h2>
+        <div className={`text-red-400 font-black text-xs uppercase tracking-[0.4em] mb-10 transition-all duration-700 ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-90'}`}>Excellence Defined</div>
+        <h2 className={`text-5xl lg:text-8xl font-black mb-24 tracking-tighter leading-none transition-all duration-1000 cubic-bezier ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>RAPID <br/>DEPLOYMENT</h2>
         
         <div className="grid md:grid-cols-3 gap-12 lg:gap-20">
           {steps.map((step, idx) => (
             <div 
               key={idx} 
-              className={`relative p-14 bg-white/5 backdrop-blur-sm border border-white/10 rounded-[4rem] hover:bg-white/10 transition-all duration-700 group text-left transition-all duration-1000 delay-${idx * 200} ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'}`}
+              className={`relative p-14 bg-white/5 backdrop-blur-sm border border-white/10 rounded-[4rem] hover:bg-white/10 transition-all duration-700 cubic-bezier group text-left ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}
+              style={{ transitionDelay: `${idx * 200}ms` }}
             >
               <div className="w-20 h-20 bg-[#EA4643] rounded-3xl flex items-center justify-center text-4xl font-black mb-12 shadow-2xl group-hover:scale-110 group-hover:rotate-6 transition-all duration-500">
                 {idx + 1}
               </div>
-              <h4 className="text-4xl font-black mb-8 tracking-tighter">{step.title}</h4>
+              <h4 className="text-3xl lg:text-4xl font-black mb-8 tracking-tighter">{step.title}</h4>
               <p className="text-red-100/60 leading-relaxed font-medium text-lg">{step.desc}</p>
               <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent to-white opacity-10 group-hover:animate-shine" />
             </div>
@@ -688,18 +983,19 @@ const FAQ = () => {
   return (
     <section id="faq" ref={domRef} className="py-40 bg-slate-50/30">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className={`text-6xl lg:text-8xl font-black text-slate-950 text-center mb-24 tracking-tighter transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>QUESTIONS?</h2>
+        <h2 className={`text-5xl lg:text-7xl font-black text-slate-950 text-center mb-24 tracking-tighter transition-all duration-1000 cubic-bezier ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>QUESTIONS?</h2>
         <div className="space-y-8">
           {faqs.map((faq, idx) => (
             <div 
               key={idx} 
-              className={`bg-white p-12 rounded-[4rem] border border-slate-100 shadow-2xl shadow-red-900/5 hover:shadow-red-200/50 transition-all duration-700 group transition-all duration-1000 delay-${idx * 150} ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
+              className={`bg-white p-12 rounded-[4rem] border border-slate-100 shadow-2xl shadow-red-900/5 hover:shadow-red-200/50 transition-all duration-700 cubic-bezier group ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}
+              style={{ transitionDelay: `${idx * 150}ms` }}
             >
-              <h4 className="text-2xl font-black text-red-950 mb-6 flex items-start leading-tight">
+              <h4 className="text-xl lg:text-2xl font-black text-blue-950 mb-6 flex items-start leading-tight">
                 <span className="w-12 h-12 rounded-[1.25rem] bg-red-50 text-[#EA4643] flex items-center justify-center text-lg mr-6 mt-1 flex-shrink-0 group-hover:bg-[#EA4643] group-hover:text-white transition-all duration-500 font-black">?</span>
                 {faq.q}
               </h4>
-              <p className="text-slate-600 text-xl font-medium leading-relaxed pl-18">{faq.a}</p>
+              <p className="text-slate-600 text-lg lg:text-xl font-medium leading-relaxed pl-18">{faq.a}</p>
             </div>
           ))}
         </div>
@@ -714,15 +1010,15 @@ const CTA = () => {
   return (
     <section ref={domRef} className="py-40 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className={`bg-[#EA4643] rounded-[6rem] p-16 lg:p-40 text-center text-white relative overflow-hidden shadow-[0_60px_120px_-20px_rgba(234,70,67,0.4)] transition-all duration-1000 ${isVisible ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`}>
+        <div className={`bg-[#EA4643] rounded-[6rem] p-16 lg:p-40 text-center text-white relative overflow-hidden shadow-[0_60px_120px_-20px_rgba(234,70,67,0.4)] transition-all duration-1000 cubic-bezier ${isVisible ? 'scale-100 opacity-100 translate-y-0' : 'scale-95 opacity-0 translate-y-12'}`}>
           <div className="relative z-10 max-w-5xl mx-auto">
             <div className="absolute inset-0 z-0 bg-gradient-to-r from-[#EA4643] via-red-600 to-red-700 bg-[length:200%_200%] animate-gradient-slow opacity-95"></div>
-            <h2 className="relative z-10 text-7xl lg:text-[10rem] font-black mb-12 tracking-tighter leading-[0.8]">COMMAND <br/><span className="text-red-200">CENTRAL.</span></h2>
-            <p className="relative z-10 text-3xl text-red-100 mb-16 leading-relaxed max-w-2xl mx-auto font-medium opacity-90">One dashboard. Zero silos. Unified growth.</p>
+            <h2 className="relative z-10 text-6xl lg:text-[10rem] font-black mb-12 tracking-tighter leading-[0.8]">COMMAND <br/><span className="text-red-200">CENTRAL.</span></h2>
+            <p className="relative z-10 text-2xl lg:text-3xl text-red-100 mb-16 leading-relaxed max-w-2xl mx-auto font-medium opacity-90">One dashboard. Zero silos. Unified growth.</p>
             <a 
               href={ERP_URL} 
               target="_self"
-              className="relative overflow-hidden group inline-flex items-center justify-center bg-white text-[#EA4643] px-20 py-10 rounded-[2.5rem] text-4xl font-black hover:bg-red-50 transition-all shadow-3xl shadow-red-950/20 transform hover:scale-105 active:scale-95"
+              className="relative overflow-hidden group inline-flex items-center justify-center bg-white text-[#EA4643] px-16 lg:px-20 py-8 lg:py-10 rounded-[2.5rem] text-3xl lg:text-4xl font-black hover:bg-red-50 transition-all shadow-3xl shadow-red-950/20 transform hover:scale-105 active:scale-95"
             >
               <span className="relative z-10 flex items-center">
                 Launch System
@@ -742,10 +1038,10 @@ const Footer = () => (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="grid md:grid-cols-4 gap-20 mb-32">
         <div className="col-span-2">
-          <div className="text-6xl font-black text-slate-950 mb-10 tracking-tighter">
+          <div className="text-5xl lg:text-6xl font-black text-slate-950 mb-10 tracking-tighter">
             QITPES <span className="text-[#EA4643] font-light">ERP</span>
           </div>
-          <p className="text-slate-400 max-w-md mb-12 text-2xl leading-relaxed font-medium">
+          <p className="text-slate-400 max-w-md mb-12 text-xl lg:text-2xl leading-relaxed font-medium">
             Building the digital foundation for the physical world.
           </p>
         </div>
@@ -767,18 +1063,18 @@ const Footer = () => (
         </div>
       </div>
       
-      <div className="border-t border-slate-100 pt-20 flex flex-col lg:flex-row justify-between items-center text-slate-400 font-bold text-xs tracking-[0.4em] uppercase">
+      <div className="border-t border-slate-100 pt-20 flex flex-col lg:flex-row justify-between items-center text-slate-400 font-bold text-[10px] tracking-[0.4em] uppercase">
         <div className="mb-8 lg:mb-0">© {new Date().getFullYear()} QITPES ERP SYSTEM. ALL RIGHTS RESERVED.</div>
         <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-5 p-5 bg-slate-50 rounded-3xl border border-slate-100 shadow-inner group overflow-hidden relative transition-all duration-700 hover:border-red-200">
           <div className="absolute inset-0 bg-gradient-to-r from-red-50/0 via-red-50/50 to-red-50/0 bg-[length:200%_auto] animate-gradient-slow group-hover:opacity-100 opacity-50 transition-opacity"></div>
           <div className="flex flex-col items-center sm:items-end relative z-10">
-            <span className="text-[9px] text-slate-400 mb-0.5 font-black">ARCHITECTED BY</span>
-            <span className="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-slate-900 via-[#EA4643] to-slate-900 bg-[length:200%_auto] animate-text-shimmer tracking-tighter">SOURISH DEY</span>
+            <span className="text-[8px] text-slate-400 mb-0.5 font-black">ARCHITECTED BY</span>
+            <span className="text-lg lg:text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-slate-900 via-[#EA4643] to-slate-900 bg-[length:200%_auto] animate-text-shimmer tracking-tighter">SOURISH DEY</span>
           </div>
           <a 
             href={PORTFOLIO_URL} 
             target="_blank"
-            className="relative overflow-hidden flex items-center space-x-2.5 px-5 py-2.5 bg-[#EA4643] text-white rounded-xl font-black text-xs hover:bg-[#D13D3A] transition-all shadow-xl shadow-red-300 transform hover:-translate-y-1 group/btn"
+            className="relative overflow-hidden flex items-center space-x-2.5 px-5 py-2.5 bg-[#EA4643] text-white rounded-xl font-black text-[10px] hover:bg-[#D13D3A] transition-all shadow-xl shadow-red-300 transform hover:-translate-y-1 group/btn"
           >
             <span className="relative z-10 flex items-center">
               PORTFOLIO
@@ -798,12 +1094,18 @@ const App: React.FC = () => {
       <Navbar />
       <Hero />
       <StatsStrip />
+      <TrustBadges />
       <Solutions />
+      <TechnicalArchitecture />
       <RoleExperience />
       <EcosystemHub />
+      <DigitalTwin />
       <Industries />
+      <WorkflowBuilder />
+      <ResourceOptimization />
       <ROICalculator />
       <Implementation />
+      <SafetyProtocol />
       <ComplianceVault />
       <GlobalCommandCenter />
       <FAQ />
@@ -845,12 +1147,25 @@ const App: React.FC = () => {
           to { transform: rotate(360deg); }
         }
         .animate-spin-slow { animation: spin-slow 60s linear infinite; }
-        html { scroll-behavior: smooth; }
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(15px); }
-          to { opacity: 1; transform: translateY(0); }
+        @keyframes progress {
+          0% { transform: translateX(-100%); }
+          100% { transform: translateX(0%); }
         }
-        .animate-fade-in { animation: fadeIn 0.8s ease-out forwards; }
+        .animate-progress { animation: progress 2s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        html { scroll-behavior: smooth; }
+        
+        .cubic-bezier {
+          transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes mirrorSweep {
+          0% { transform: translateX(-100%) skewX(-20deg); }
+          100% { transform: translateX(200%) skewX(-20deg); }
+        }
+        .animate-mirror-sweep {
+          animation: mirrorSweep 2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+        }
+
         ::selection { background: #EA4643; color: white; }
       `}</style>
     </div>
