@@ -56,7 +56,7 @@ import {
 } from 'lucide-react';
 
 const ERP_URL = "https://qitpes-erp-system.vercel.app/";
-const PORTFOLIO_URL = "https://sourishdeyportfolio.vercel.app/";
+const PORTFOLIO_URL = "https://arunimaduttaportfolio.vercel.app/";
 
 const SLIDESHOW_IMAGES = [
   "https://res.cloudinary.com/dodhvvewu/image/upload/v1770922899/construction-site-blue-12728140_wacsbw.webp",
