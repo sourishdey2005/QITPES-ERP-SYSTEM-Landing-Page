@@ -1083,7 +1083,7 @@ const Footer = () => (
           <div className="absolute inset-0 bg-gradient-to-r from-red-50/0 via-red-50/30 to-red-50/0 bg-[length:200%_auto] animate-gradient-slow group-hover:opacity-100 opacity-30 transition-opacity"></div>
           <div className="flex flex-col items-center sm:items-end relative z-10">
             <span className="text-[7px] text-slate-400 mb-1 font-black">ARCHITECTED BY</span>
-            <span className="text-base font-black text-transparent bg-clip-text bg-gradient-to-r from-slate-900 via-[#EA4643] to-slate-900 bg-[length:200%_auto] animate-text-shimmer tracking-tighter">SOURISH DEY</span>
+            <span className="text-base font-black text-transparent bg-clip-text bg-gradient-to-r from-slate-900 via-[#EA4643] to-slate-900 bg-[length:200%_auto] animate-text-shimmer tracking-tighter">ARUNIMA DUTTA</span>
           </div>
           <a 
             href={PORTFOLIO_URL} 
